@@ -1,38 +1,61 @@
 'use strict';
 
-async function init() {
-    const start = Date.now();
-    document.getElementById('output').innerHTML = `0: init()`;
+// const fruit = new Map();
 
-    const userPromise = getUserData();
-    const welcomeString = getWelcomeString();
+// fruit.set(1, 'Banana');
+// fruit.set(2, 'Apple');
+// fruit.set(3, 'Strawberry');
 
-    const user = await userPromise;
-    document.getElementById('output').innerHTML += `<br>${Date.now() - start}: ${user.name}`;
+// document.getElementById('output').innerHTML = fruit.get(2);
 
-    const welcomeString = await welcomeString;
-    document.getElementById('output').innerHTML += `<br>${Date.now() - start}: ${welcomeString}`;
-}
+// fruit.delete(2);
 
-function getUserData() {
-    return new Promise((resolve, reject) => {
-        let user = {
-            name: 'Andrew',
-            email: 'andrew@example.com'
-        };
+// fruit.forEach(item => {
+//     document.getElementById('output').innerHTML += '<br>' + item;
+// });
 
-        setTimeout(() => {
-            resolve(user);
-        }, 2000);
-    });
-}
+// fruit.set(4, {
+//     type: 'Orange',
+//     color: 'orange',
+//     flavor: 'orangey'
+// });
 
-function welcomeString() {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve('Welcome to my asyncronous program!');
-        }, 2000);
-    });
-}
+// document.getElementById('output').innerHTML = fruit.get(4).flavor;
 
-init();
+const users = new Map();
+
+users.set({
+    name: 'Andrew',
+    email: 'andrew@example.com'
+}, function(user) {
+    document.getElementById('output').innerHTML += `${user.name} (${user.email}) <br>`;
+});
+
+const userAshley = {
+    name: 'Ashley',
+    email: 'ashley@example.com'
+};
+
+users.set(userAshley, function(user) {
+    document.getElementById('output').innerHTML += `$({user.email}) ${user.name} <br>`;
+});
+
+users.forEach((value, key) => {
+    value(key);
+});
+
+let userAshleyExists = users.has(userAshley);
+
+console.log('userAshleyExists: ', userAshleyExists);
+
+const fruit = new Set();
+
+fruit.add('Banana');
+fruit.add('Apple');
+fruit.add('Strawberry');
+fruit.add('Apple');
+fruit.add('Apple');
+
+fruit.forEach(value => {
+    document.getElementById('output').innerHTML += '<br>' + value;
+});
