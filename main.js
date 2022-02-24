@@ -1,25 +1,25 @@
 'use strict';
 
-let myPromise = new Promise((resolve, reject) => {
-    // call an api
-    let user = {
-        name: 'Andrew',
-        email: 'andrew@example.com'
-    };
+async function init() {
+    const start = Date.now();
+    document.getElementById('output').innerHTML = `0: init()`;
 
-    setTimeout(() => {
-        // resolve(user);
-        reject('Sorry, could not retrieve the user.');
-    }, 2000);
-});
+    const userPromise = getUserData();
+    const welcomeString = getWelcomeString();
 
-const getAdditionalUserData = user => {
-    document.getElementById('output').innerHTML = `${user.name} (${user.email})`;
+    const user = await userPromise;
+    document.getElementById('output').innerHTML += `<br>${Date.now() - start}: ${user.name}`;
 
+    const welcomeString = await welcomeString;
+    document.getElementById('output').innerHTML += `<br>${Date.now() - start}: ${welcomeString}`;
+}
+
+function getUserData() {
     return new Promise((resolve, reject) => {
-        // calling another api to get more user data
-        user.favoriteColor = 'Blue';
-        user.currentDrink = 'La Croix';
+        let user = {
+            name: 'Andrew',
+            email: 'andrew@example.com'
+        };
 
         setTimeout(() => {
             resolve(user);
@@ -27,12 +27,12 @@ const getAdditionalUserData = user => {
     });
 }
 
-myPromise.then(getAdditionalUserData)
-    .then((user) => {
-        document.getElementById('output').innerHTML = `${user.name} (${user.email}) - ${user.currentDrink}`;
-    })
-    .catch((error) => {
-        document.getElementById('output').innerHTML = error;
+function welcomeString() {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve('Welcome to my asyncronous program!');
+        }, 2000);
     });
+}
 
-document.getElementById('output').innerHTML = 'Look ma, no blocking!';
+init();
