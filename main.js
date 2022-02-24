@@ -1,45 +1,72 @@
 'use strict';
 
-// function init(name, isTrue) {
-//     document.getElementById('output').innerHTML = `${username.name} (${username.email})`;
+// // Initialize an Item class
+// function Item(name, category) {
+//     this.name = name;
+//     this.category = category;
 // }
 
-// function nameString() {
-//     return `${username.name} (${username.email})`;
+// // Create a method called getDetails() for an Item
+// Item.prototype.getDetails = function() {
+//     return `${this.name} - ${this.category}`;
 // }
 
-// const nameString = name => `${name} (${username.email})`;
+// // Initialize a PurchasedItem class, inherits the Item class
+// function PurchasedItem(name, category, price) {
+//     Item.call(this, name, category);
+//     this.price = price;
+// }
 
-// document.getElementById('output').innerHTML = nameString('Andrew');
+// // Sets the inherited methods and properties of the base class
+// PurchasedItem.prototype = Object.create(Item.prototype);
+// PurchasedItem.prototype.constructor = PurchasedItem;
 
-let users = [
-    {
-        name: 'Andrew',
-        email: 'andrew@example.com'
-    },
-    {
-        name: 'Ashley',
-        email: 'ashley@example.com'
-    }
-];
+// // Creates a new method just for the extended PurchasedItem class
+// PurchasedItem.prototype.getDetailsWithPrice = function() {
+//     return `${this.name} - ${this.category} - $${this.price}`;
+// }
 
-let names = [];
+// var item = new Item('Coffee', 'Food');
+// item.category = 'Drinks';
 
-// users.forEach(function(user) {
-//     // do something with that user object
-//     names.push(user.name);
-// });
+// var purchasedItem = new PurchasedItem('Sugar', 'Food', '2.49');
 
-users.forEach(user => names.push(user.name));
-
-document.getElementById('output').innerHTML = names.join(', ');
-
-document.getElementById('btn').addEventListener('click', (e) => {
-
-    const getDetails = () => {
-        return `The button id is ${e.currentTarget.getAttribute('id')}`;
+class Item {
+    constructor(name, category) {
+        this.name = name;
+        this.category = category;
     }
 
-    document.getElementById('output').innerHTML = getDetails();
+    static maxItems = 10;
 
-});
+    static getHelperText() {
+        return 'Add some items to your grocery list';
+    }
+
+    getDetails() {
+        return `${this.name} - ${this.category}`;
+    }
+}
+
+class PurchasedItem extends Item {
+    constructor(name, category, price) {
+        super(name, category);
+        this.price = price;
+    }
+
+    getDetailsWithPrice() {
+        return `${this.name} - ${this.category} - $${this.price}`;
+    }
+
+    static getNumberOfItems() {
+        return `3 / ${super.maxItems}`;
+    }
+}
+
+// let item = new Item('Coffee', 'Food');
+// item.category = 'Drinks';
+
+// let purchasedItem = new PurchasedItem('Sugar', 'Food', '2.49');
+
+// document.getElementById('output').innerHTML = item.getDetails();
+document.getElementById('output').innerHTML = PurchasedItem.getNumberOfItems();
